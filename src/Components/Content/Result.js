@@ -1,4 +1,4 @@
-import { Table, Modal, Space, Pagination, Row, Input, Spin } from "antd";
+import { Table, Modal, Space, Pagination, Row, Input, Spin, Button } from "antd";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -80,7 +80,7 @@ class Result extends Component {
         <Spin className="spin" spinning={this.state.loading} />
 
         {/* table */}
-        <Table dataSource={data} size="middle" pagination={false}>
+        <Table rowKey="id" dataSource={data} size="middle" pagination={false}>
           <Table.Column title="شناسه" dataIndex="id" key="id" />
           <Table.Column title="نام" dataIndex="first_name" key="first_name" />
           <Table.Column
@@ -94,7 +94,7 @@ class Result extends Component {
             key="action"
             render={(user) => (
               <Space size="middle">
-                <a onClick={() => this.showModal(user)}>ویرایش</a>
+                <Button type="link" onClick={() => this.showModal(user)}>ویرایش</Button>
               </Space>
             )}
           />
@@ -115,7 +115,7 @@ class Result extends Component {
 
         {/* basic modal */}
         <Modal
-          title="ویرایش کاربر با شماره"
+          title={"ویرایش کاربر با شماره "+this.state.id}
           visible={this.state.isModalVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}

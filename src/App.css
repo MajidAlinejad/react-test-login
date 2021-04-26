@@ -196,6 +196,72 @@
     z-index: 1;
     left: 47.2%;
   }
+
+
+  /* login  */
+
+
+  .login-log{
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .login-log .anticon {
+    font-size: 6em;
+    color: #c7c7c7;
+    margin-bottom: 10px;
+  }
+
+  .login-col{
+    margin: 0 auto;
+    padding: 10px;
+  }
+
+  .login-wrapper{
+    border: 2px dashed #c7c7c7;
+    padding: 30px 20px;
+    border-radius: 20px;
+    
+  }
+
+  .login-wrapper button[type="submit"]{
+    width: 100%;
+    border-radius: 15px;
+    padding:  20px;
+    line-height: 0;  
+    
+  }
+
+  .login-wrapper .ant-form-item{
+    margin-bottom: 30px;
+  }
+
+  .login-wrapper .ant-form-item:last-child{
+    margin-bottom: 0;
+  }
+
+  .login-wrapper .wrong{
+    color: crimson;  
+    margin-top: -10px;
+    text-align: center;  
+  }
+
+  .login-wrapper .ant-form-item:last-child .ant-form-item-control-input-content{
+    margin: 0 auto;
+    max-width: 60%;
+  }
+
+  .login-wrapper .ant-input-affix-wrapper{
+    border-radius: 15px;
+    padding: 9px 16px;
+    
+  }
+
+  .copywrite span{
+    position: fixed;
+    bottom: 0;
+    right: calc(50% - 112px);
+  }
 }
 
 @media screen and (max-width: 370px) {
@@ -246,6 +312,11 @@
 
   .search-input input[type="button"] {
     width: 100px;
+  }
+  .copywrite span{
+    position: relative;
+    bottom: 0;
+    right: calc(50% - 112px);
   }
 }
 

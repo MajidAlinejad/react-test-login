@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Badge, Avatar } from "antd";
+import { Layout, Menu } from "antd";
 import {
     UserOutlined,
     LaptopOutlined,

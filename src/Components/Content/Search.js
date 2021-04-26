@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Space } from "antd";
+import { Input } from "antd";
 
 export default class Search extends Component {
 
