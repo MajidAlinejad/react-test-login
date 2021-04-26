@@ -5,6 +5,7 @@ import { Component } from "react";
 import Header from "../src/Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Search from "./Components/Content/Search";
+import Result from "./Components/Content/Result";
 
 const { Content } = Layout;
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
             <Sidebar/>
             <Layout className="container-section">
               <Search/>
+              <Result/>
             </Layout>
             </Layout>
            
