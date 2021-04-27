@@ -11,10 +11,12 @@ class Login extends Component {
     error: false,
   };
 
+  //look if username and password is right?   
   onFinish = (e) => {
     this.props.userValidator(e);
   };
 
+  // if username & password was wrong throw a error
   componentDidUpdate(prevProps) {
     if (prevProps.error !== this.props.error) {
       this.setState({

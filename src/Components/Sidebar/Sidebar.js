@@ -8,6 +8,9 @@ import {
   
 const { SubMenu } = Menu;
 const {  Sider } = Layout;
+
+
+//simply a sidebar for no reason :)
 export default class Sidebar extends Component {
     render() {
         return (

@@ -1,8 +1,18 @@
-import { Table, Modal, Space, Pagination, Row, Input, Spin, Button } from "antd";
+import {
+  Table,
+  Modal,
+  Space,
+  Pagination,
+  Row,
+  Input,
+  Spin,
+  Button,
+} from "antd";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getRecords } from "../../Redux/Action/Record";
+import { searchResult, sendKeyword } from "../../Redux/Action/Search";
 
 class Result extends Component {
   state = {
@@ -12,10 +22,25 @@ class Result extends Component {
     id: 0,
     name: "",
     lastname: "",
-    pageSize: 0, //perpage
-    total: 0, //total
+    pageSize: 0, //perpage data
+    total: 0, //total data
     loading: true,
+    dataSource: [],
     data: [],
+  };
+
+  // filter data by user keyword
+  filter = (keyword) => {
+    this.setState(
+      {
+        data: this.state.dataSource.filter((res) =>
+          res.email.toLowerCase().includes(keyword.toLowerCase())
+        ),
+      },
+      () => {
+        this.props.searchResult(this.state.data.length); //update number of search result
+      }
+    );
   };
 
   showModal = (user) => {
@@ -28,46 +53,63 @@ class Result extends Component {
   };
 
   handleOk = () => {
+    //handle func if ok pressed in modal
     this.setState({ setIsModalVisible: false });
- 
   };
 
   handleCancel = () => {
+    // close and cancel modal
     this.setState({ isModalVisible: false, name: "", lastname: "", id: 0 });
   };
 
   onNamechange = (e) => {
+    //set user input name in state from modal
     const { value } = e.target;
     this.setState({ name: value });
   };
 
   onLastNamechange = (e) => {
+    //set user input last name in state from modal
     const { value } = e.target;
     this.setState({ lastname: value });
   };
 
   onPageChange = (page) => {
+    //paginate functionality
     this.setState(
       {
         current: page,
         loading: true,
       },
-      () => this.props.getRecords(page)
+      () => this.props.getRecords(page) //get next or prev page data
     );
   };
 
   componentDidMount() {
-    this.props.getRecords();
+    this.props.getRecords(); //get first page data
   }
+
   componentDidUpdate(prevProps) {
+    //listen if change variables
     if (prevProps.record !== this.props.record) {
       this.setState({
         data: this.props.data,
+        dataSource: this.props.data,
         loading: this.props.loading,
         current: this.props.record.data.page,
         total: this.props.record.data.total,
         pageSize: this.props.record.data.per_page,
       });
+    }
+
+    // if new keyword search requested then filter
+    if (prevProps.keyword !== this.props.keyword) {
+      this.filter(this.props.keyword);
+    }
+
+    // if new keyword search requested then erase last result
+    if (prevProps.data !== this.props.data) {
+      this.props.sendKeyword("");
     }
   }
 
@@ -76,11 +118,10 @@ class Result extends Component {
     return (
       <div className="result">
         <hr />
-
+        {/* loading */}
         <Spin className="spin" spinning={this.state.loading} />
-
         {/* table */}
-        <Table rowKey="id" dataSource={data} size="middle" pagination={false}>
+        <Table rowKey="id" dataSource={data} size="small" pagination={false}>
           <Table.Column title="شناسه" dataIndex="id" key="id" />
           <Table.Column title="نام" dataIndex="first_name" key="first_name" />
           <Table.Column
@@ -88,13 +129,14 @@ class Result extends Component {
             dataIndex="last_name"
             key="last_name"
           />
-
           <Table.Column
             title="تنظیمات"
             key="action"
             render={(user) => (
               <Space size="middle">
-                <Button type="link" onClick={() => this.showModal(user)}>ویرایش</Button>
+                <Button type="link" onClick={() => this.showModal(user)}>
+                  ویرایش
+                </Button>
               </Space>
             )}
           />
@@ -115,7 +157,7 @@ class Result extends Component {
 
         {/* basic modal */}
         <Modal
-          title={"ویرایش کاربر با شماره "+this.state.id}
+          title={"ویرایش کاربر با شماره " + this.state.id}
           visible={this.state.isModalVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -148,14 +190,21 @@ const mapStateToProps = (state) => {
     record: state.record,
     loading: state.record.loading,
     data: state.record.data.data,
+    keyword: state.search.keyword,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getRecords: (page) => {
-      dispatch(getRecords(page)); 
-    }
+      dispatch(getRecords(page));
+    },
+    sendKeyword: (keyword) => {
+      dispatch(sendKeyword(keyword));
+    },
+    searchResult: (number) => {
+      dispatch(searchResult(number));
+    },
   };
 };
 

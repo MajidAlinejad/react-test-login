@@ -3,7 +3,7 @@ const initialState = {
   user: false,
   error:false
 };
-
+// redux reducer handle user status 
 const UserReducer = (state = initialState, actions) => {
   if (actions.type === "ERROR") {
     state = {

@@ -11,24 +11,39 @@ import { connect } from "react-redux";
 import { userLogout } from "../../Redux/Action/User";
 
 class Header extends Component {
+  state = {
+    resultNumber: 0,
+  };
+
   logout = () => {
+    //call logout func
     this.props.userLogout();
   };
+  //listen to new search result number to update the header
+  componentDidUpdate(prevProps) {
+    if (prevProps.resultNumber !== this.props.resultNumber) {
+      this.setState({
+        resultNumber: this.props.resultNumber,
+      });
+    }
+  }
 
   render() {
     const userInfo = (
       <Menu className="user-info">
+        {/* avatar and user info */}
         <Menu.Item key="0" className="user-title">
           <Avatar size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 80, xxl: 100 }}>
             User
           </Avatar>
           <br />
-          {/* <Menu.Divider /> */}
           <strong>نام و نام خانوادگی کاربر</strong>
           <br />
           <em>سمت کاربر</em>
         </Menu.Item>
+        {/* avatar and user info */}
         <Menu.Divider />
+        {/* just a couple of buttons */}
         <Menu.Item key="1">
           <Button type="link" block>
             {" "}
@@ -43,19 +58,22 @@ class Header extends Component {
           </Button>
         </Menu.Item>
         <Menu.Divider />
+        {/* just a couple of buttons */}
+        {/* logout button */}
         <Menu.Item key="3">
           <Button type="dashed" block danger onClick={this.logout}>
             خروج <PoweroffOutlined />{" "}
           </Button>
         </Menu.Item>
+        {/* logout button */}
       </Menu>
     );
 
     return (
       <div>
         <Layout.Header className="header ovr-header">
-          {/* <div className="logo" /> */}
           <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
+            {/* header avatar */}
             <Menu.Item key="1">
               <Dropdown
                 overlay={userInfo}
@@ -64,7 +82,7 @@ class Header extends Component {
                 className="user-info-drop"
               >
                 <span
-                  className="ant-dropdown-link" 
+                  className="ant-dropdown-link"
                   onClick={(e) => e.preventDefault()}
                 >
                   <Avatar className="header-avatar" size="large">
@@ -73,22 +91,28 @@ class Header extends Component {
                 </span>
               </Dropdown>
             </Menu.Item>
-            {/* <Menu.Item key="2">حروج</Menu.Item> */}
+            {/* header avatar */}
             <Menu.Item key="2">
               {" "}
               <SearchOutlined />
               جستجو
             </Menu.Item>
+            {/* search result print :) */}
             <Menu.Item className="end-item" key="4">
-              54
+              تعداد نتایج در این صفحه : {this.state.resultNumber}
             </Menu.Item>
+            {/* search result print :) */}
           </Menu>
         </Layout.Header>
       </div>
     );
   }
 }
-
+const mapStateToProps = (state) => {
+  return {
+    resultNumber: state.search.number,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     userLogout: () => {
@@ -97,4 +121,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(connect(null,mapDispatchToProps)(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

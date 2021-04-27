@@ -2,7 +2,6 @@ import "./App.css";
 import { ConfigProvider } from "antd";
 import faIR from "antd/lib/locale/fa_IR";
 import { Component } from "react";
-
 import Login from "./Components/Login/Login";
 import { Switch, Route, withRouter } from "react-router-dom";
 import Dashboard from "./Components/Dashboard/Dashboard";
@@ -13,6 +12,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    // handle if user login or not from previous activity
     if (this.state.user) {
       this.props.history.push("/dashboard");
     } else {
@@ -25,6 +25,7 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    // listen for user action in case of login or logout
     if (prevProps.user !== this.props.user) {
       if (this.props.user.user) {
         this.props.history.push("/dashboard");
@@ -40,9 +41,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {/* config  provider for user right to left leyout   */}
         <ConfigProvider locale={faIR} direction="rtl">
           <Switch>
-            <Route exact path="/" render={()=> <Login />}  />
+            {/* react-router-dom browser route function */}
+            <Route exact path="/" render={() => <Login />} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="*">404 not found</Route>
           </Switch>
@@ -60,5 +63,3 @@ const mapStateToProps = (state) => {
 };
 
 export default withRouter(connect(mapStateToProps)(App));
-
-
